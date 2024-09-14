@@ -5,7 +5,8 @@ tic;
 
 slCharacterEncoding = 'UTF-8';
 %%%%%%% 网格参数和物性参数 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Defines_Mesh_and_Physical_Parameters_Elastic();
+% Defines_Mesh_and_Physical_Parameters_Elastic();
+Defines_Mesh_and_Physical_Parameters_Elastic_SGR();
 
 pole = 1;
 %%%%%%%% MCFS-NPML参数 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -43,7 +44,8 @@ grid_type = "RSG";
 
 %%%%%%%% 震源类型 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 source_type = "explosive";     %  爆炸震源
-a_cerjan = 0.04;
+% source_type = "vertical";
+a_cerjan = 0.016;
 Cerjan_Absorbing_Boundary_Condition = Cerjan_Absorbing_Boundary(a_cerjan,nx_PML,nz_PML,PML_l);
 
 
@@ -823,7 +825,21 @@ for n = 1:nt
            time_record_theta_fz_1500ms(n,3) = 0; 
        end
 
-    %   当时间进行到0.325秒时输出快照和地震记录
+       figure(500)
+       surf(x_main_region,z_main_region,v_z_last_half(PML_l + 1:nz_PML - PML_l,PML_l + 1:nx_PML - PML_l));
+       set(gca,'Fontname','Times New Roman','fontweight','bold','FontSize',10);
+       str_title = ['v_Z, (t=',num2str(t*1e3),'ms)'];
+       title(str_title,'Fontname','Times New Roman','fontweight','bold','FontSize',10);
+       shading interp;
+       view(0,270);
+       xlabel('X(m)');
+       ylabel('Z(m)');
+       axis image;
+       colorbar;
+       colormap(gray);
+       % strings = {'(a)'};
+       
+%   当时间进行到0.325秒时输出快照和地震记录
        if t == t_wavefield
             %   质点速度垂直分量的波场快照    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             figure('Name','TAE_vz_explosive','Units','centimeters','Position',[10,10,7.3,5.45]);
@@ -832,6 +848,7 @@ for n = 1:nt
             str_title = ['v_Z, (t=',num2str(t*1e3),'ms)'];
             title(str_title,'Fontname','Times New Roman','fontweight','bold','FontSize',10);
             shading interp;
+            view(0,270);
             xlabel('X(m)');
             ylabel('Z(m)');
             axis image;
@@ -848,6 +865,7 @@ for n = 1:nt
             str_title = ['v_X, (t=',num2str(t*1e3),'ms)'];
             title(str_title,'Fontname','Times New Roman','fontweight','bold','FontSize',10);
             shading interp;
+            view(0,270);
             xlabel('X(m)');
             ylabel('Z(m)');
             axis image;
